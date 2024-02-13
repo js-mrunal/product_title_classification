@@ -1,3 +1,18 @@
+# Generic
+.DS_STORE
+
+# ignore the data folder
 data/
+
+# file extensions
+*.csv
+*.tsv
+*gz
+*.zip
+*.parquet
+
+# ipython checkpoints
+.ipynb_checkpoints/
+
 .DS_Store
 .DS_Store data/.DS_Store
