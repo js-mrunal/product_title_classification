@@ -1,5 +1,6 @@
 # Generic
 .DS_STORE
+**/.DS_Store
 
 # ignore the data folder
 data/
@@ -13,6 +14,3 @@ data/
 
 # ipython checkpoints
 .ipynb_checkpoints/
-
-.DS_Store
-.DS_Store data/.DS_Store
