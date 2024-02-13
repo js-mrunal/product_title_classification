@@ -1,6 +1,9 @@
 # Generic
 .DS_STORE
 **/.DS_Store
+*.pyc
+*.pyo
+__pycache__/
 
 # ignore the data folder
 data/
@@ -11,6 +14,11 @@ data/
 *gz
 *.zip
 *.parquet
+
+# image file extensions
+*.png
+*.jpg
+*.jpeg
 
 # ipython checkpoints
 .ipynb_checkpoints/
