@@ -11,9 +11,9 @@ class DataHandling:
     file_path: str
     shortlisted_categories: list
     # initialising rest of the class variables
-    data = pd.DataFrame()
-    train_data = pd.DataFrame()
-    test_data = pd.DataFrame()
+    data: pd.DataFrame  = field(init = False)
+    train_data: pd.DataFrame  = field(init = False)
+    test_data: pd.DataFrame  = field(init = False)
     STOP_WORDS = stopwords.words("english")
 
     def __post_init__(self):
@@ -26,8 +26,10 @@ class DataHandling:
             print("Data Loaded with shape: ", self.data.shape)
         except:
             print("Error in reading data file")
+        self._preprocess_data()
+        self._train_test_split()
 
-    def preprocess_data(self):
+    def _preprocess_data(self):
         gpc_data_categories = self.data.gpc_categories.str.split(">", expand=True)
         self.data = pd.concat(
             [self.data["product_title_cleaned"], gpc_data_categories[0]], axis=1
@@ -57,8 +59,7 @@ class DataHandling:
         word_lst = [word for word in text.split() if word not in self.STOP_WORDS]
         return " ".join(word_lst)
 
-    def train_test_split(self, p_shuffle=True, p_test_size=0.10):
-        assert len(self.data) > 0, "No data loaded. Use read_data() first"
+    def _train_test_split(self, p_shuffle=True, p_test_size=0.10):
         self.train_data, self.test_data = train_test_split(
             self.data, shuffle=p_shuffle, test_size=p_test_size
         )

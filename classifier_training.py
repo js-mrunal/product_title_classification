@@ -20,8 +20,6 @@ shortlisted_categories = [
     #     "sporting goods",
 ]
 gpc = DataHandling(file_path=file_path, shortlisted_categories=shortlisted_categories)
-gpc.preprocess_data()
-gpc.train_test_split()
 
 # prepare training features
 tfidf = TfidfVectorizer(min_df=5, stop_words="english").fit(gpc.data.product_title)
