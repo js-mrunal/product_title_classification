@@ -1,54 +1,56 @@
+from cgi import test
 import pandas as pd
 import nltk
+from typing import Tuple
 from nltk.corpus import stopwords
 import string
+
 nltk.download("stopwords")
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass, field
+from functools import cached_property
+
 
 @dataclass
-class DataHandling:
+class DataLoader:
     file_path: str
-    shortlisted_categories: list
     # initialising rest of the class variables
-    data: pd.DataFrame  = field(init = False)
-    train_data: pd.DataFrame  = field(init = False)
-    test_data: pd.DataFrame  = field(init = False)
-    STOP_WORDS = stopwords.words("english")
+    data: pd.DataFrame = field(init=False)
+    train_data: pd.DataFrame = field(init=False)
+    test_data: pd.DataFrame = field(init=False)
+
+    @cached_property
+    def stop_words(self):
+        return stopwords.words("english")
 
     def __post_init__(self):
         try:
             self.data = pd.read_csv(
                 self.file_path,
                 encoding="utf-8",
-                sep="\t",
             )
             print("Data Loaded with shape: ", self.data.shape)
         except:
             print("Error in reading data file")
-        self._preprocess_data()
-        self._train_test_split()
-
-    def _preprocess_data(self):
-        gpc_data_categories = self.data.gpc_categories.str.split(">", expand=True)
-        self.data = pd.concat(
-            [self.data["product_title_cleaned"], gpc_data_categories[0]], axis=1
+        self.data = self._preprocess_data(self.data)
+        self.train_data, self.test_data = self._train_test_split(p_test_size=0.10)
+        print(
+            "Train data: ", self.train_data.shape, " Test data: ", self.test_data.shape
         )
-        self.data = self.data.rename(
-            columns={0: "category", "product_title_cleaned": "product_title"}
-        )
-        if self.shortlisted_categories != None:
-            self.data = self.data.loc[
-                self.data.category.isin(self.shortlisted_categories)
-            ]
-            print("\nTruncated data: ", self.data.shape)
 
+    def get_data(self):
+        return self.data
+
+    def get_train_test_data(self):
+        return self.train_data, self.test_data
+
+    def _preprocess_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         # preprocess product title
-        self.data["product_title"] = self.data["product_title"].apply(
+        raw_data["product_title"] = raw_data["product_title"].apply(
             self._title_preprocessing
         )
-        self.data["word_count"] = self.data["product_title"].str.split().str.len()
-        self.data = self.data.loc[self.data["word_count"] > 1]
+        raw_data["word_count"] = raw_data["product_title"].str.split().str.len()
+        return raw_data.loc[raw_data["word_count"] > 1]
 
     # defining this as a private function
     # as we will only use it internally
@@ -56,13 +58,10 @@ class DataHandling:
         text = text.strip().lower()
         text = text.replace("-", " ")
         text = text.translate(str.maketrans("", "", string.punctuation))
-        word_lst = [word for word in text.split() if word not in self.STOP_WORDS]
+        word_lst = [word for word in text.split() if word not in self.stop_words]
         return " ".join(word_lst)
 
-    def _train_test_split(self, p_shuffle=True, p_test_size=0.10):
-        self.train_data, self.test_data = train_test_split(
-            self.data, shuffle=p_shuffle, test_size=p_test_size
-        )
-        print(
-            "Train data: ", self.train_data.shape, " Test data: ", self.test_data.shape
-        )
+    def _train_test_split(
+        self, p_shuffle=True, p_test_size=0.10
+    ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        return train_test_split(self.data, shuffle=p_shuffle, test_size=p_test_size)
