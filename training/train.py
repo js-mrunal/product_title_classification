@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from dataloader import DataLoader
 from model import MulticlassDNN
 
+import sys
+sys.path.append('../')
 
 def dnn_training(file_path: str) -> bool:
     # model training
@@ -12,7 +14,7 @@ def dnn_training(file_path: str) -> bool:
         file_path=file_path,
         feature_columns=["product_title"],
         label_column="category",
-        save_dir_path= "model_data"
+        save_dir_path= "../model_data"
     )
 
     multiclass_nn.plot_model()
@@ -23,5 +25,5 @@ def dnn_training(file_path: str) -> bool:
 
 
 if __name__ == "__main__":
-    file_path = "data/gpc_product_titles_subset_data.csv"
+    file_path = "../data/gpc_product_titles_subset_data.csv"
     dnn_training(file_path=file_path)

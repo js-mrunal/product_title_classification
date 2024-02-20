@@ -11,7 +11,10 @@ from functools import cached_property
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from dataclasses import dataclass, field
-from utils import load_model, load_pickle
+
+import sys
+sys.path.append('../')
+from utils.utils import load_model, load_pickle
 
 @dataclass
 class DNNInference:

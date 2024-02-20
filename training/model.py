@@ -1,5 +1,6 @@
 from cProfile import label
 from tkinter import Y
+import os
 import numpy as np
 import pandas as pd
 import keras
@@ -11,8 +12,10 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from numpy import argmax
 from sklearn.metrics import accuracy_score, precision_score, recall_score
-from utils import save_model, save_pickle
 
+import sys
+sys.path.append('../')
+from utils.utils import save_pickle, save_model
 
 @dataclass
 class MulticlassDNN:
@@ -108,6 +111,8 @@ class MulticlassDNN:
         print("Accuracy on testing data: ",  test_acc)
 
         # save model weights
+        if not os.path.exists(f"{self.save_dir_path}"):
+            os.mkdir(f"{self.save_dir_path}")
         save_pickle(self.feature_transformer, f"{self.save_dir_path}/feature_transformer.pkl")
         save_pickle(self.label_transformer, f"{self.save_dir_path}/label_transformer.pkl")
         save_model(self.model, f"{self.save_dir_path}/classifier")

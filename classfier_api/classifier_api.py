@@ -1,11 +1,11 @@
-from asyncio import streams
-from http.client import responses
+import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from typing import List
 
-import pandas as pd
-from inference import DNNInference
+import sys
+sys.path.append('../')
+from inference.inference import DNNInference
 
 class CategoryPredictionIn(BaseModel):
     product_titles : List[str] = Field(..., max_items=10)
@@ -18,7 +18,7 @@ async def predict_category(titles: CategoryPredictionIn) -> dict:
     dnn_inference = DNNInference(
         feature_column = "product_titles",
         data = product_titles_df,
-        save_dir_path= "model_data"
+        save_dir_path= "../model_data"
     )
     predicted_labels = dnn_inference.predict()
     return predicted_labels
