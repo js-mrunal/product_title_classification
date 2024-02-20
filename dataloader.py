@@ -31,12 +31,9 @@ class DataLoader:
             )
             print("Data Loaded with shape: ", self.data.shape)
         except:
-            print("Error in reading data file")
+             raise ValueError("Error in reading data file")
         self.data = self._preprocess_data(self.data)
         self.train_data, self.test_data = self._train_test_split(p_test_size=0.10)
-        print(
-            "Train data: ", self.train_data.shape, " Test data: ", self.test_data.shape
-        )
 
     def get_data(self):
         return self.data
@@ -55,8 +52,7 @@ class DataLoader:
     # defining this as a private function
     # as we will only use it internally
     def _title_preprocessing(self, text: str) -> str:
-        text = text.strip().lower()
-        text = text.replace("-", " ")
+        text =  text.replace("-", " ").strip().lower()
         text = text.translate(str.maketrans("", "", string.punctuation))
         word_lst = [word for word in text.split() if word not in self.stop_words]
         return " ".join(word_lst)

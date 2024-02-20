@@ -8,6 +8,9 @@ __pycache__/
 # ignore the data folder
 data/
 
+# model weights
+model_data/
+
 # file extensions
 *.csv
 *.tsv

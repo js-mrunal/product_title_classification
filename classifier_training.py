@@ -10,14 +10,15 @@ def dnn_training(file_path: str) -> bool:
     # model training
     multiclass_nn = MulticlassDNN(
         file_path=file_path,
-        feature_column="product_title",
+        feature_columns=["product_title"],
         label_column="category",
+        save_dir_path= "model_data"
     )
 
     multiclass_nn.plot_model()
     history = multiclass_nn.fit()
 
-    # todo: dump results
+    # TODO: dump results
     return True
 
 
