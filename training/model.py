@@ -13,9 +13,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from numpy import argmax
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 
-import sys
-sys.path.append('../')
-from utils.utils import save_pickle, save_model
+from utils import save_pickle, save_model
 
 @dataclass
 class MulticlassDNN:

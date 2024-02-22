@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 from dataloader import DataLoader
 from model import MulticlassDNN
 
-import sys
-sys.path.append('../')
-
 def dnn_training(file_path: str) -> bool:
     # model training
     multiclass_nn = MulticlassDNN(

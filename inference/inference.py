@@ -12,9 +12,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from dataclasses import dataclass, field
 
-import sys
-sys.path.append('../')
-from utils.utils import load_model, load_pickle
+from utils import load_model, load_pickle
 
 @dataclass
 class DNNInference:
