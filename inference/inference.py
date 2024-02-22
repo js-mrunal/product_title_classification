@@ -1,16 +1,14 @@
-from dataclasses import dataclass
-from json import load
-import numpy as np
-import pandas as pd
-
-import nltk
-import keras
 import string
-from nltk.corpus import stopwords
 from functools import cached_property
+from dataclasses import dataclass, field
+
+import pandas as pd
+import keras
+from nltk.corpus import stopwords
+
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
-from dataclasses import dataclass, field
+
 
 from utils import load_model, load_pickle
 
@@ -33,8 +31,8 @@ class DNNInference:
             self.model = load_model(f"{self.save_dir_path}/classifier")
             self.feature_transformer = load_pickle(f"{self.save_dir_path}/feature_transformer.pkl")
             self.label_transformer = load_pickle(f"{self.save_dir_path}/label_transformer.pkl")
-        except:
-             raise ValueError("Error in reading models and data files.")
+        except Exception as exc:
+             raise ValueError("Error in reading models and data files.") from exc
         self.data = self._preprocess_data(self.data)
 
     def _preprocess_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
@@ -59,3 +57,4 @@ class DNNInference:
         predicted_array = self.label_transformer.inverse_transform(predicted_array).reshape(1, -1)[0]
         predictions = dict(zip(list(self.data[self.feature_column]), list(predicted_array)))
         return predictions
+    
