@@ -1,26 +1,27 @@
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
-from dataloader import DataLoader
+'''
+Main script for training a neural network model on the specified data file.
+'''
 from model import MulticlassDNN
 
 def dnn_training(file_path: str) -> bool:
-    # model training
+    '''
+    Creates an instance of MulticlassDNN and trains a neural network 
+    on data read from the file_path.
+    '''
     multiclass_nn = MulticlassDNN(
         file_path=file_path,
         feature_columns=["product_title"],
         label_column="category",
-        save_dir_path= "../model_data"
+        save_dir_path= "./model_data"
     )
 
     multiclass_nn.plot_model()
-    history = multiclass_nn.fit()
-
-    # TODO: dump results
+    multiclass_nn.compile_fit()
     return True
 
 
 if __name__ == "__main__":
-    file_path = "../data/gpc_product_titles_subset_data.csv"
-    dnn_training(file_path=file_path)
+    # Example Usage
+    FILE_PATH = "data/gpc_product_titles_subset_data.csv"
+    dnn_training(file_path=FILE_PATH)
+    
