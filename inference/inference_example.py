@@ -1,5 +1,7 @@
 import pandas as pd
 from inference import DNNInference
+import sys
+sys.path.append('../')
 
 if __name__ == '__main__':
 
@@ -15,7 +17,7 @@ if __name__ == '__main__':
     dnn_inference = DNNInference(
         feature_column = "product_title",
         data = test_product_titles,
-        save_dir_path= "model_data"
+        save_dir_path= "../model_data"
     )
 
     predicted_labels = dnn_inference.predict()
