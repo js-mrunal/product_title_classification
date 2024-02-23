@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+numpy = "*"
+scikit-learn = "*"
+tensorflow-metal = "*" 
+tensorflow-macos = "*" 
+keras = "*"
+notebook = "*" 
+nltk = "*"
+pydot = "*"
+graphviz = "*"
+matplotlib = "*"
+fastapi = "*"
+uvicorn = "*"
+black = "*"
+isort = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
