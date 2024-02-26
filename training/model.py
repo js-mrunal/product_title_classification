@@ -183,11 +183,11 @@ class MulticlassDNN:
             epochs=2,
             verbose=1,
         )
-        test_x, test_y = self.format_data_for_nn(data_df=self.test_df)
-        y_pred = np.array(argmax(self.model.predict(test_x), axis=1))
-        y_true = np.array(argmax(test_y, axis=1))
-        test_acc = accuracy_score(y_true=y_true, y_pred=y_pred)
-        print("Accuracy on testing data: ", test_acc)
+        # test_x, test_y = self.format_data_for_nn(data_df=self.test_df)
+        # y_pred = np.array(argmax(self.model.predict(test_x), axis=1))
+        # y_true = np.array(argmax(test_y, axis=1))
+        # test_acc = accuracy_score(y_true=y_true, y_pred=y_pred)
+        # print("Accuracy on testing data: ", test_acc)
 
         # save model weights
         if not os.path.exists(f"{self.save_dir_path}"):

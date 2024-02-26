@@ -7,13 +7,14 @@ name = "pypi"
 pandas = "*"
 numpy = "*"
 scikit-learn = "*"
-tensorflow-metal = "*" 
-tensorflow-macos = "*" 
+tensorflow = {version = "*", markers = "sys_platform == 'linux' and platform_machine == 'aarch64'"}
+tensorflow-metal = {version = "*", markers = "platform_machine == 'arm64'"}
+tensorflow-macos = {version = "*", markers = "platform_machine == 'arm64'"}
 keras = "*"
 notebook = "*" 
 nltk = "*"
-pydot = "*"
 graphviz = "*"
+pydot = "*"
 matplotlib = "*"
 fastapi = "*"
 uvicorn = "*"
