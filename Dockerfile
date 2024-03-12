@@ -1,19 +1,38 @@
-FROM python:3.11
+FROM python:3.11-slim
+ENV PYTHONUNBUFFERED True
 
 RUN apt-get update
+RUN apt-get install -y gcc python3-dev
 
-RUN apt-get install -y graphviz
+ENV APP_HOME /app
+WORKDIR $APP_HOME
+COPY . ./
 
 RUN pip install pipenv
+RUN pipenv lock
+RUN pipenv install --deploy --system
 
-COPY . /opt/
+ENV PORT 8080
+CMD exec uvicorn api:app --host 0.0.0.0 --port ${PORT} --workers 1
 
-WORKDIR /opt/
+# FROM python:3.11-slim
 
-RUN make init
+# ENV PYTHONUNBUFFERED True
 
-ENV PYTHONPATH="${PYTHONPATH}:/opt/"
+# RUN apt-get update
 
-RUN make train
+# RUN apt-get install -y gcc python3-dev
 
-ENTRYPOINT ["make", "run-local"]
+# WORKDIR /opt
+
+# COPY requirements.txt /opt/
+
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# COPY . /opt/
+
+# ENV HOST 0.0.0.0
+# ENV PORT 8000
+# EXPOSE 8000
+
+# CMD exec python api.py

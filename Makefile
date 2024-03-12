@@ -15,4 +15,4 @@ train:
 	pipenv run python training/train.py
 
 run-local:
-	pipenv run uvicorn api:app --host 0.0.0.0 --port 80
+	pipenv run uvicorn api:app --host 0.0.0.0 --port 8080

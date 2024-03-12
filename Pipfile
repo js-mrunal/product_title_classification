@@ -7,9 +7,7 @@ name = "pypi"
 pandas = "*"
 numpy = "*"
 scikit-learn = "*"
-tensorflow = {version = "*", markers = "sys_platform == 'linux' and platform_machine == 'aarch64'"}
-tensorflow-metal = {version = "*", markers = "platform_machine == 'arm64'"}
-tensorflow-macos = {version = "*", markers = "platform_machine == 'arm64'"}
+tensorflow = {version = "2.15", platform_machine ="!= 'arm64'"}
 keras = "*"
 notebook = "*" 
 nltk = "*"
@@ -20,6 +18,8 @@ fastapi = "*"
 uvicorn = "*"
 black = "*"
 isort = "*"
+six = "*"
+typing_extensions = "*"
 
 [dev-packages]
 

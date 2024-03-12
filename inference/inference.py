@@ -2,14 +2,17 @@ import string
 from dataclasses import dataclass, field
 from functools import cached_property
 
-import keras
+import nltk
 import pandas as pd
+import tensorflow as tf
+print(tf.__version__)
+import keras
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import OneHotEncoder
 
 from utils import load_model, load_pickle
-
+nltk.download("stopwords")
 
 @dataclass
 class DNNInference:
