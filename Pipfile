@@ -20,6 +20,11 @@ black = "*"
 isort = "*"
 six = "*"
 typing_extensions = "*"
+google-cloud = "*"
+google-cloud-storage = "*"
+seaborn = "*"
+ta = "*"
+mlflow = "*"
 
 [dev-packages]
 

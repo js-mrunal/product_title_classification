@@ -20,7 +20,6 @@ from sklearn.preprocessing import OneHotEncoder
 
 from utils import save_model, save_pickle
 
-
 @dataclass
 class MulticlassDNN:
     """
@@ -88,9 +87,9 @@ class MulticlassDNN:
                 np.random.shuffle(row_indices)
 
             batch_indices = row_indices[index * batch_size : (index + 1) * batch_size]
-            raw_x = self.train_df.loc[batch_indices, "product_title"].values
+            raw_x = self.train_df.loc[batch_indices, self.feature_columns[0]].values
             batch_x = self.feature_transformer.transform(raw_x).toarray()
-            raw_y = self.train_df.loc[batch_indices, "category"].values
+            raw_y = self.train_df.loc[batch_indices, self.label_column].values
             batch_y = self.label_transformer.transform(raw_y.reshape(-1, 1)).todense()
 
             index += 1
@@ -173,6 +172,9 @@ class MulticlassDNN:
             metrics=["accuracy"],
         )
         BATCH_SIZE = 128
+        EPOCHS = 2
+
+
         train_data_gen = self._training_data_generator(batch_size=BATCH_SIZE)
         train_steps = np.ceil(len(self.train_df) / BATCH_SIZE)
         # print(f"\nShape of train_x: {self.train_x.shape}, y: {self.train_y.shape}")
@@ -180,15 +182,17 @@ class MulticlassDNN:
         self.model.fit(
             train_data_gen,
             steps_per_epoch=train_steps,
-            epochs=2,
+            epochs=EPOCHS,
             verbose=1,
         )
+        mlflow.tensorflow.log_model(self.model,"dnn_model")
+
         test_x, test_y = self.format_data_for_nn(data_df=self.test_df)
         y_pred = np.array(argmax(self.model.predict(test_x), axis=1))
         y_true = np.array(argmax(test_y, axis=1))
         test_acc = accuracy_score(y_true=y_true, y_pred=y_pred)
         print("Accuracy on testing data: ", test_acc)
-
+        mlflow.log_metric("test_acc", test_acc)
         # save model weights
         if not os.path.exists(f"{self.save_dir_path}"):
             os.mkdir(f"{self.save_dir_path}")

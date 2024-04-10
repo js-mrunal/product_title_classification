@@ -4,8 +4,6 @@ from functools import cached_property
 
 import nltk
 import pandas as pd
-import tensorflow as tf
-print(tf.__version__)
 import keras
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -20,6 +18,7 @@ class DNNInference:
     data: pd.DataFrame
     save_dir_path: str
 
+    transformed_data: pd.DataFrame = field(init=False)
     feature_transformer: TfidfVectorizer = field(init=False)
     label_transformer: OneHotEncoder = field(init=False)
     model: keras.models.Model = field(init=False)
@@ -40,6 +39,9 @@ class DNNInference:
         except Exception as exc:
             raise ValueError("Error in reading models and data files.") from exc
         self.data = self._preprocess_data(self.data)
+        self.transformed_data = self.feature_transformer.transform(
+            self.data[self.feature_column]
+        ).toarray()
 
     def _preprocess_data(self, raw_data: pd.DataFrame) -> pd.DataFrame:
         # preprocess product title
@@ -58,14 +60,15 @@ class DNNInference:
         return " ".join(word_lst)
 
     def predict(self):
-        input_x = self.feature_transformer.transform(
-            self.data[self.feature_column]
-        ).toarray()
-        predicted_array = self.model.predict(input_x)
-        predicted_array = self.label_transformer.inverse_transform(
-            predicted_array
+        predicted_array = self.model.predict(self.transformed_data)
+        return self.inverse_transform(predicted_array)
+
+    
+    def inverse_transform(self, y_pred):
+        y_pred = self.label_transformer.inverse_transform(
+            y_pred
         ).reshape(1, -1)[0]
         predictions = dict(
-            zip(list(self.data[self.feature_column]), list(predicted_array))
+            zip(list(self.data[self.feature_column]), list(y_pred))
         )
         return predictions

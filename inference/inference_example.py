@@ -1,5 +1,4 @@
 import pandas as pd
-
 from inference import DNNInference
 
 if __name__ == "__main__":
