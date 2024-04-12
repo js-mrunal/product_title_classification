@@ -174,9 +174,8 @@ class MulticlassDNN:
         BATCH_SIZE = 128
         EPOCHS = 2
 
-
         train_data_gen = self._training_data_generator(batch_size=BATCH_SIZE)
-        train_steps = np.ceil(len(self.train_df) / BATCH_SIZE)
+        train_steps = int(np.ceil(len(self.train_df) / BATCH_SIZE))
         # print(f"\nShape of train_x: {self.train_x.shape}, y: {self.train_y.shape}")
         # import pdb;pdb.set_trace()
         self.model.fit(
@@ -185,14 +184,12 @@ class MulticlassDNN:
             epochs=EPOCHS,
             verbose=1,
         )
-        mlflow.tensorflow.log_model(self.model,"dnn_model")
 
         test_x, test_y = self.format_data_for_nn(data_df=self.test_df)
         y_pred = np.array(argmax(self.model.predict(test_x), axis=1))
         y_true = np.array(argmax(test_y, axis=1))
         test_acc = accuracy_score(y_true=y_true, y_pred=y_pred)
         print("Accuracy on testing data: ", test_acc)
-        mlflow.log_metric("test_acc", test_acc)
         # save model weights
         if not os.path.exists(f"{self.save_dir_path}"):
             os.mkdir(f"{self.save_dir_path}")

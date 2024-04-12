@@ -4,7 +4,7 @@ from functools import cached_property
 
 import nltk
 import pandas as pd
-import keras
+import tensorflow as tf
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import OneHotEncoder
@@ -21,7 +21,7 @@ class DNNInference:
     transformed_data: pd.DataFrame = field(init=False)
     feature_transformer: TfidfVectorizer = field(init=False)
     label_transformer: OneHotEncoder = field(init=False)
-    model: keras.models.Model = field(init=False)
+    model: tf.keras.models.Model = field(init=False)
 
     @cached_property
     def stop_words(self):

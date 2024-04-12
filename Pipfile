@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pandas = "*"
 numpy = "*"
+pandas = "*"
 scikit-learn = "*"
 tensorflow = {version = "2.15", platform_machine ="!= 'arm64'"}
 keras = "*"
@@ -23,8 +23,8 @@ typing_extensions = "*"
 google-cloud = "*"
 google-cloud-storage = "*"
 seaborn = "*"
-ta = "*"
 mlflow = "*"
+
 
 [dev-packages]
 

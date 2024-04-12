@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.11
 ENV PYTHONUNBUFFERED True
 
 RUN apt-get update
@@ -9,7 +9,6 @@ WORKDIR $APP_HOME
 COPY . ./
 
 RUN pip install pipenv
-RUN pipenv lock
 RUN pipenv install --deploy --system
 
 ENV PORT 8080
