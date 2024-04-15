@@ -1,0 +1,32 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+scikit-learn = "*"
+tensorflow = {version = "2.15", platform_machine ="!= 'arm64'"}
+keras = "*"
+notebook = "*" 
+nltk = "*"
+graphviz = "*"
+pydot = "*"
+matplotlib = "*"
+fastapi = "*"
+uvicorn = "*"
+black = "*"
+isort = "*"
+six = "*"
+typing_extensions = "*"
+google-cloud = "*"
+google-cloud-storage = "*"
+seaborn = "*"
+mlflow = "*"
+
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
